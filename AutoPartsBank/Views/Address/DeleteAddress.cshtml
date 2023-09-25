@@ -1,0 +1,44 @@
+﻿@model Address
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-danger">Edit Address</h2>
+            <hr />
+        </div>
+        <input asp-for="AddressId" hidden />
+        <div class="mb-3 row p-1">
+            <label asp-for="Street" class="p-0">Street</label>
+            <input asp-for="Street" disabled type="text" class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Suburb" class="p-0">Suburb</label>
+            <input asp-for="Suburb" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="State" class="p-0">State</label>
+            <input asp-for="State" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Postcode" class="p-0">Postcode</label>
+            <input asp-for="Postcode" disabled class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-outline-danger form-control">
+                    <i class="bi bi-trash3-fill"></i> Delete
+                </button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Address" asp-action="Index" class="btn btn-outline-secondary form-control">
+                    <i class="bi bi-arrow-left-circle-fill"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
