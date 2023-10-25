@@ -1,0 +1,46 @@
+﻿@model Vehicle
+<div class="card shadow border-0">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Edit Vehicle</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <div class="border p-3 mt-4">
+                <div asp-validation-summary="ModelOnly" class="row"></div>
+                <div class="row">
+                    <div class="form-floating py-2 col-6">
+                        <input asp-for="VIN" disabled type="text" class="form-control border-0 shadow" />
+                        <label asp-for="VIN" class="ms-2"></label>
+                        <span asp-validation-for="VIN" class="text-primary"></span>
+                    </div>
+                    <div class="form-floating py-2 col-6">
+                        <input asp-for="buildYear" type="text" class="form-control border-0 shadow" />
+                        <label asp-for="buildYear" class="ms-2"></label>
+                        <span asp-validation-for="buildYear" class="text-primary"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">
+                            <i class="bi bi-floppy-fill"></i> Save
+                        </button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-area="Admin" asp-controller="Vehicle" asp-action="Index" class="btn btn-outline-secondary form-control">
+                            <i class="bi bi-arrow-left-circle-fill"></i> Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page
+@model EcommerceRazor.Pages.CarParts.IndexModel
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-danger">
+                Part List
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-page="/CarParts/AddPart" class="btn btn-outline-danger">
+                <i class="bi bi-plus-square-fill"></i> Add New Part
+            </a>
+        </div>
+    </div>
+</div>
+<table class = "table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Part ID</th>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Part Name</th>
+            <th>Display Order</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model.CarPartList)
+        {
+            <tr>
+                <td>@obj.PartId</td>
+                <td>@obj.Manufacturer</td>
+                <td>@obj.Model</td>
+                <td>@obj.Year</td>
+                <td>@obj.PartName</td>
+                <td>@obj.DisplayOrder</td>
+                <td>
+                    <div class="w-20 btn-group" role="group">
+                        
+                            <a asp-page="/CarParts/EditPart" asp-route-partId="@obj.PartId" class="btn btn-dark mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                    
+                        
+                            <a asp-page="/CarParts/DeletePart"  asp-route-partId="@obj.PartId" class="btn btn-primary mx-2">
+                                <i class="bi bi-trash3-fill"></i> Delete
+                            </a>
+                 
+                        
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

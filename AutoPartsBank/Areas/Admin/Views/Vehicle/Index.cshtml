@@ -1,0 +1,46 @@
+﻿@model List<Vehicle>
+<partial name="_Notification" />
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Vehicle List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="col-12 pb-2 text-end">
+            <a asp-area="Admin" asp-controller="Vehicle" asp-action="AddVehicle" class="btn btn-outline-primary">
+                <i class="bi bi-plus-square-fill"></i> Add New Vehicle
+            </a>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>VIN</th>
+                    <th>Build Year</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+                        <td>@obj.VIN</td>
+                        <td>@obj.buildYear</td>
+                        <td>
+                            <div class="w-20 btn-group">
+                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="EditVehicle" asp-route-VIN="@obj.VIN" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="DeleteVehicle" asp-route-VIN="@obj.VIN" class="btn btn-danger">
+                                    <i class="bi bi-trash3-fill"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

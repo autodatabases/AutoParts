@@ -1,0 +1,53 @@
+﻿@page
+@model EcommerceRazor.Pages.CarParts.AddPartModel
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-danger">Add Car Part</h2>
+        </div>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CarPart.Manufacturer" class="p-0"></label>
+            <input asp-for="CarPart.Manufacturer" class="form-control" />
+            <span asp-validation-for="CarPart.Manufacturer" class="text-primary"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CarPart.Model" class="p-0">Model</label>
+            <input asp-for="CarPart.Model" class="form-control" />
+            <span asp-validation-for="CarPart.Model" class="text-primary"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CarPart.Year" class="p-0"></label>
+            <input asp-for="CarPart.Year" class="form-control" />
+            <span asp-validation-for="CarPart.Year" class="text-primary"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CarPart.PartName" class="p-0"></label>
+            <input asp-for="CarPart.PartName" class="form-control" />
+            <span asp-validation-for="CarPart.PartName" class="text-primary"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CarPart.DisplayOrder" class="p-0"></label>
+            <input asp-for="CarPart.DisplayOrder" class="form-control" />
+            <span asp-validation-for="CarPart.DisplayOrder" class="text-primary"></span>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-outline-danger form-control">
+                    <i class="bi bi-database-fill-add"></i> Add
+                </button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-page="/CarParts/Index" class="btn btn-outline-secondary form-control">
+                    <i class="bi bi-arrow-left-circle-fill"></i> Back
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+
