@@ -3,6 +3,7 @@ using AutoParts.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoParts.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231205095004_addForeignKeyRelationBetweenVehicleAndPartCategory")]
+    partial class addForeignKeyRelationBetweenVehicleAndPartCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,9 +80,6 @@ namespace AutoParts.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartId"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -95,15 +95,12 @@ namespace AutoParts.DataAccess.Migrations
 
                     b.HasKey("PartId");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Parts");
 
                     b.HasData(
                         new
                         {
                             PartId = 1,
-                            CategoryId = 1,
                             Description = "Engine Cover",
                             ImageUrl = "",
                             PartName = "Bonnet"
@@ -111,7 +108,6 @@ namespace AutoParts.DataAccess.Migrations
                         new
                         {
                             PartId = 2,
-                            CategoryId = 2,
                             Description = "Above Right Wheel",
                             ImageUrl = "",
                             PartName = "Right Guard"
@@ -119,7 +115,6 @@ namespace AutoParts.DataAccess.Migrations
                         new
                         {
                             PartId = 3,
-                            CategoryId = 3,
                             Description = "Cover Driver",
                             ImageUrl = "",
                             PartName = "Right Door"
@@ -242,17 +237,6 @@ namespace AutoParts.DataAccess.Migrations
                             Manufacturer = "VW",
                             Model = "Golf"
                         });
-                });
-
-            modelBuilder.Entity("AutoParts.Models.Part", b =>
-                {
-                    b.HasOne("AutoParts.Models.PartCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("AutoParts.Models.PartCategory", b =>

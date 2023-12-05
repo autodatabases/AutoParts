@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoParts.Models
 {
@@ -13,5 +14,9 @@ namespace AutoParts.Models
         [MaxLength(4, ErrorMessage = "Invalid Year")]
         [DisplayName("Build Year")]
         public string buildYear { get; set; }
+
+        public int VendorId { get; set; }
+        [ForeignKey("VendorId")]
+        public Vendor Vendor { get; set; }
     }
 }

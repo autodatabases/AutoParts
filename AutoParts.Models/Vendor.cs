@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoParts.Models
 {
@@ -16,7 +17,6 @@ namespace AutoParts.Models
         [Required]
         [DisplayName("Model")]
         public string Model { get; set; }
-
 
     }
 }
