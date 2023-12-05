@@ -1,6 +1,7 @@
 ﻿using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AutoPartsBank.Areas.Admin.Controllers
 {
@@ -17,11 +18,23 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Vehicle> objVehicle = _unitOfWork.Vehicle.GetAll().ToList();
+            IEnumerable<SelectListItem> VendorList = _unitOfWork.Vendor
+                .GetAll().Select(u=> new SelectListItem{ 
+                    Text = u.Manufacturer,
+                    Value = u.VendorId.ToString()
+                });
             return View(objVehicle);
         }
 
         public IActionResult AddVehicle()
         {
+            IEnumerable<SelectListItem> VendorList = _unitOfWork.Vendor
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Manufacturer,
+                    Value = u.VendorId.ToString()
+                });
+            ViewBag.VendorList = VendorList;
             return View();
         }
 

@@ -22,6 +22,13 @@
                         <label asp-for="buildYear" class="ms-2"></label>
                         <span asp-validation-for="buildYear" class="text-primary"></span>
                     </div>
+                    <div class="form-floating py-2 col-6">
+                        <select asp-for="VendorId" asp-items = "ViewBag.VendorList" type="text" class="form-select border-0 shadow" >
+                            <option disabled selected>--Select Vendor--</option>
+                        </select>
+                        <label asp-for="VendorId" class="ms-2"></label>
+                        <span asp-validation-for="VendorId" class="text-primary"></span>
+                    </div>
                 </div>
                 <div class="row pt-2 pb-2">
                     <div class="col-6 col-md-3">
