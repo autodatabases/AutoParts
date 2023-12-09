@@ -20,7 +20,6 @@
                     <th>Vendor ID</th>
                     <th>Manufacturer</th>
                     <th>Model</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +29,6 @@
                         <td>@obj.VendorId</td>
                         <td>@obj.Manufacturer</td>
                         <td>@obj.Model</td>
-                        <td></td>
                         <td>
                             <div class="w-20 btn-group">
                                 <a asp-area="Admin" asp-controller="Vendor" asp-action="EditVendor" asp-route-VendorId="@obj.VendorId" class="btn btn-primary mx-2">

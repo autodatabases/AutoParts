@@ -1,5 +1,6 @@
 ﻿using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
+using AutoParts.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -18,37 +19,44 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Vehicle> objVehicle = _unitOfWork.Vehicle.GetAll().ToList();
-            IEnumerable<SelectListItem> VendorList = _unitOfWork.Vendor
-                .GetAll().Select(u=> new SelectListItem{ 
-                    Text = u.Manufacturer,
-                    Value = u.VendorId.ToString()
-                });
             return View(objVehicle);
         }
 
         public IActionResult AddVehicle()
         {
-            IEnumerable<SelectListItem> VendorList = _unitOfWork.Vendor
+            VehicleVM vehicleVM = new() {
+                VendorList = _unitOfWork.Vendor
                 .GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Manufacturer,
                     Value = u.VendorId.ToString()
-                });
-            ViewBag.VendorList = VendorList;
-            return View();
+                }),
+
+                Vehicle = new Vehicle()
+
+            };
+            return View(vehicleVM);
         }
 
         [HttpPost]
-        public IActionResult AddVehicle(Vehicle obj)
+        public IActionResult AddVehicle(VehicleVM vehicleVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Vehicle.Add(obj);
+                _unitOfWork.Vehicle.Add(vehicleVM.Vehicle);
                 _unitOfWork.Save();
                 Message = "Vehicle Added Successfully";
                 return RedirectToAction("Index", "Vehicle");
             }
-            return View();
+            else {
+                vehicleVM.VendorList = _unitOfWork.Vendor
+                    .GetAll().Select(u => new SelectListItem { 
+                        Text = u.Manufacturer,
+                        Value = u.VendorId.ToString()
+                    });
+                return View();
+            }
+            
         }
 
         public IActionResult EditVehicle(string? VIN)

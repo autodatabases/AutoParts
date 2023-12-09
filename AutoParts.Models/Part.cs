@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace AutoParts.Models
         [Key]
         public int PartId { get; set; }
         [Required]
-        [MaxLength(30, ErrorMessage ="Car Part Name cannot be empty")]
+        [MaxLength(30, ErrorMessage = "Car Part Name cannot be empty")]
         [DisplayName("Part Name")]
         public string PartName { get; set; }
         [Required]
@@ -18,7 +19,7 @@ namespace AutoParts.Models
 
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
+        [ValidateNever]
         public PartCategory Category { get; set; }
-        public string ImageUrl { get; set; }
     }
 }

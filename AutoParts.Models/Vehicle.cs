@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,7 @@ namespace AutoParts.Models
 
         public int VendorId { get; set; }
         [ForeignKey("VendorId")]
+        [ValidateNever]
         public Vendor Vendor { get; set; }
     }
 }

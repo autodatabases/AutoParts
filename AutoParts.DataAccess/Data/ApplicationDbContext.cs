@@ -24,9 +24,9 @@ namespace AutoParts.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Part>().HasData(
-                new Part { PartId = 1, PartName = "Bonnet", Description="Engine Cover", CategoryId = 1, ImageUrl="" },
-                new Part { PartId = 2, PartName = "Right Guard", Description = "Above Right Wheel", CategoryId = 2, ImageUrl ="" },
-                new Part { PartId = 3, PartName = "Right Door", Description = "Cover Driver", CategoryId = 3, ImageUrl ="" }
+                new Part { PartId = 1, PartName = "Bonnet", Description="Engine Cover", CategoryId = 1,},
+                new Part { PartId = 2, PartName = "Right Guard", Description = "Above Right Wheel", CategoryId = 2},
+                new Part { PartId = 3, PartName = "Right Door", Description = "Cover Driver", CategoryId = 3}
                 );
             modelBuilder.Entity<Address>().HasData(
                 new Address { AddressId= 1, Street="10 Park Road", State= "NSW", Suburb= "Auburn", Postcode= "2144"},

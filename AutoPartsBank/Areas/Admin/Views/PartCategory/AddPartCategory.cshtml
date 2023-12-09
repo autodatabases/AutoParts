@@ -1,4 +1,4 @@
-﻿@model PartCategory
+﻿@model PartCategoryVM
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
@@ -13,16 +13,16 @@
                 <div asp-validation-summary="ModelOnly" class="row"></div>
                 <div class="row">
                     <div class="form-floating py-2 col-6">
-                        <input asp-for="CategoryName" type="text" class="form-control border-0 shadow" />
-                        <label asp-for="CategoryName" class="ms-2"></label>
-                        <span asp-validation-for="CategoryName" class="text-primary"></span>
+                        <input asp-for="PartCategory.CategoryName" type="text" class="form-control border-0 shadow" />
+                        <label asp-for="PartCategory.CategoryName" class="ms-2"></label>
+                        <span asp-validation-for="PartCategory.CategoryName" class="text-primary"></span>
                     </div>
                     <div class="form-floating py-2 col-6">
-                        <select asp-for="VIN" asp-items = "ViewBag.VehicleList" type="text" class="form-select border-0 shadow" >
+                        <select asp-for="PartCategory.VIN" asp-items="@Model.VehicleList" type="text" class="form-select border-0 shadow">
                             <option disabled selected>--Select Vehicle--</option>
                         </select>
-                        <label asp-for="VIN" class="ms-2"></label>
-                        <span asp-validation-for="VIN" class="text-primary"></span>
+                        <label asp-for="PartCategory.VIN" class="ms-2"></label>
+                        <span asp-validation-for="PartCategory.VIN" class="text-primary"></span>
                     </div>
                 </div>
                 <div class="row pt-2 pb-2">

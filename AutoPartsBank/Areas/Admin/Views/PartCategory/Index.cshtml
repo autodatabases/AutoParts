@@ -19,6 +19,7 @@
                 <tr>
                     <th>Category ID</th>
                     <th>Category Name</th>
+                    <th>VIN</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                     <tr>
                         <td>@obj.CategoryId</td>
                         <td>@obj.CategoryName</td>
+                        <td>@obj.VIN</td>
                         <td>
                             <div class="w-20 btn-group">
                                 <a asp-area="Admin" asp-controller="PartCategory" asp-action="EditPartCategory" asp-route-CategoryId="@obj.CategoryId" class="btn btn-primary mx-2">

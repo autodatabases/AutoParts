@@ -19,6 +19,7 @@
                 <tr>
                     <th>VIN</th>
                     <th>Build Year</th>
+                    <th>VendorId</th>
                     <th></th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                     <tr>
                         <td>@obj.VIN</td>
                         <td>@obj.buildYear</td>
+                        <td>@obj.VendorId</td>
                         <td>
                             <div class="w-20 btn-group">
                                 <a asp-area="Admin" asp-controller="Vehicle" asp-action="EditVehicle" asp-route-VIN="@obj.VIN" class="btn btn-primary mx-2">

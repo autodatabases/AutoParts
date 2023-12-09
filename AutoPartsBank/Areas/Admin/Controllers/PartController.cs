@@ -1,6 +1,7 @@
 ﻿using AutoParts.DataAccess.Data;
 using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
+using AutoParts.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -24,28 +25,37 @@ namespace AutoPartsBank.Areas.Admin.Controllers
 
         public IActionResult AddPart()
         {
-            IEnumerable<SelectListItem> PartCategoryList = _unitOfWork.PartCategory
+            PartVM partVM = new() {
+                PartCategoryList = _unitOfWork.PartCategory
                 .GetAll().Select(u => new SelectListItem
                 {
                     Text = u.CategoryName,
                     Value = u.CategoryId.ToString()
-                });
-
-            ViewBag.PartCategoryList = PartCategoryList;
-            return View();
+                }),
+                Part = new Part()
+            };
+            return View(partVM);
         }
         [HttpPost]
-        public IActionResult AddPart(Part obj)
+        public IActionResult AddPart(PartVM partVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Part.Add(obj);
+                _unitOfWork.Part.Add(partVM.Part);
                 _unitOfWork.Save();
                 TempData["success"] = "Part Added Successfully";
                 return RedirectToAction("Index", "Part");
             }
+            else {
+                partVM.PartCategoryList = _unitOfWork.PartCategory
+                    .GetAll().Select(u => new SelectListItem{ 
+                    Text = u.CategoryName,
+                    Value = u.CategoryId.ToString()
+                });
+                return View(partVM);
+            }
 
-            return View();
+            
         }
 
         public IActionResult EditPart(int? partId)
