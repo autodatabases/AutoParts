@@ -23,7 +23,7 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         }
 
 
-        public IActionResult AddPart()
+        public IActionResult Upsert(int? partId)
         {
             PartVM partVM = new() {
                 PartCategoryList = _unitOfWork.PartCategory
@@ -34,10 +34,21 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 }),
                 Part = new Part()
             };
-            return View(partVM);
+            if (partId == null || partId == 0)
+            {   
+                //create
+                return View(partVM);
+            }
+            else
+            {
+                //update
+                partVM.Part = _unitOfWork.Part.Get(u => u.PartId == partId);
+                return View(partVM);
+            }
+            
         }
         [HttpPost]
-        public IActionResult AddPart(PartVM partVM)
+        public IActionResult Upsert(PartVM partVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -56,33 +67,6 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             }
 
             
-        }
-
-        public IActionResult EditPart(int? partId)
-        {
-            if (partId == null || partId == 0)
-            {
-                return NotFound();
-            }
-            Part? partFromDb = _unitOfWork.Part.Get(u => u.PartId == partId);
-            if (partFromDb == null)
-            {
-                return NotFound();
-            }
-
-            return View(partFromDb);
-        }
-        [HttpPost]
-        public IActionResult EditPart(Part obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Part.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Part Updated Successfully";
-                return RedirectToAction("Index", "Part");
-            }
-            return RedirectToAction("Index", "Part");
         }
 
         public IActionResult DeletePart(int? partId)

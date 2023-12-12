@@ -24,7 +24,6 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult AddVendor(Vendor obj)
         {
@@ -32,7 +31,7 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             {
                 _unitOfWork.Vendor.Add(obj);
                 _unitOfWork.Save();
-                Message = "Vendor Added Successfully";
+                Message = "Vehicle Added Successfully";
                 return RedirectToAction("Index", "Vendor");
             }
             return View();
@@ -44,6 +43,7 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
             Vendor? vendorFromDb = _unitOfWork.Vendor.Get(u => u.VendorId == vendorId);
             if (vendorFromDb == null)
             {
@@ -51,7 +51,6 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             }
             return View(vendorFromDb);
         }
-
         [HttpPost]
         public IActionResult EditVendor(Vendor obj)
         {
@@ -64,7 +63,6 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             }
             return View();
         }
-
         public IActionResult DeleteVendor(int? vendorId)
         {
             if (vendorId == null || vendorId == 0)

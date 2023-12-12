@@ -3,7 +3,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Add New Vehicle</h2>
+                <h2 class="text-white py-2">@(Model.Vehicle.VIN == null ? "Add New" : "Update") Vehicle</h2>
             </div>
         </div>
     </div>
@@ -32,9 +32,19 @@
                 </div>
                 <div class="row pt-2 pb-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">
-                            <i class="bi bi-database-fill-add"></i> Add
-                        </button>
+                        @if (Model.Vehicle.VIN == null)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">
+                                <i class="bi bi-database-fill-add"></i> Add
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">
+                                <i class="bi bi-database-fill-add"></i> Update
+                            </button>
+                        }
+
                     </div>
                     <div class="col-6 col-md-3">
                         <a asp-area="Admin" asp-controller="Vehicle" asp-action="Index" class="btn btn-outline-primary form-control">

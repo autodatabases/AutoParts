@@ -3,12 +3,13 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Add New Part</h2>
+                <h2 class="text-white py-2">@(Model.Part.PartId != 0 ? "Update" : "Add New") Part</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
+            <input asp-for="Part.PartId" hidden />
             <div class="border p-3 mt-4">
                 <div asp-validation-summary="ModelOnly" class="row">
                 </div>
@@ -30,12 +31,25 @@
                         <label asp-for="Part.CategoryId" class="ms-2"></label>
                         <span asp-validation-for="Part.CategoryId" class="text-primary"></span>
                     </div>
+                    <div class="form-floating py-2 col-6">
+                        <input type="file" class="form-control border-0 shadow" />
+                        <label asp-for="Part.ImageUrl" class="ms-2"></label>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">
-                            <i class="bi bi-database-fill-add"></i> Add
-                        </button>
+                        @if (Model.Part.PartId != 0)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">
+                                <i class="bi bi-database-fill-add"></i> Update
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">
+                                <i class="bi bi-database-fill-add"></i> Add
+                            </button>
+                        }
                     </div>
                     <div class="col-6 col-md-3">
                         <a asp-area="Admin" asp-controller="Part" asp-action="Index" class="btn btn-outline-secondary form-control">

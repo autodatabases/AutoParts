@@ -10,7 +10,7 @@
     </div>
     <div class="card-body p-4">
         <div class="col-12 pb-2 text-end">
-            <a asp-area="Admin" asp-controller="Vehicle" asp-action="AddVehicle" class="btn btn-outline-primary">
+            <a asp-area="Admin" asp-controller="Vehicle" asp-action="Upsert" class="btn btn-outline-primary">
                 <i class="bi bi-plus-square-fill"></i> Add New Vehicle
             </a>
         </div>
@@ -32,7 +32,7 @@
                         <td>@obj.VendorId</td>
                         <td>
                             <div class="w-20 btn-group">
-                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="EditVehicle" asp-route-VIN="@obj.VIN" class="btn btn-primary mx-2">
+                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="Upsert" asp-route-VIN="@obj.VIN" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </a>
                                 <a asp-area="Admin" asp-controller="Vehicle" asp-action="DeleteVehicle" asp-route-VIN="@obj.VIN" class="btn btn-danger">

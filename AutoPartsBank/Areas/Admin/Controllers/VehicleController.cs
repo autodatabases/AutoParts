@@ -22,7 +22,7 @@ namespace AutoPartsBank.Areas.Admin.Controllers
             return View(objVehicle);
         }
 
-        public IActionResult AddVehicle()
+        public IActionResult Upsert(string? vin)
         {
             VehicleVM vehicleVM = new() {
                 VendorList = _unitOfWork.Vendor
@@ -35,11 +35,21 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 Vehicle = new Vehicle()
 
             };
-            return View(vehicleVM);
+            if (vin == null)
+            {
+                //create
+                return View(vehicleVM);
+            }
+            else
+            {
+                //update
+                vehicleVM.Vehicle = _unitOfWork.Vehicle.Get(u => u.VIN == vin);
+                return View(vehicleVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult AddVehicle(VehicleVM vehicleVM)
+        public IActionResult Upsert(VehicleVM vehicleVM)
         {
             if (ModelState.IsValid)
             {
@@ -57,33 +67,6 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 return View();
             }
             
-        }
-
-        public IActionResult EditVehicle(string? VIN)
-        {
-            if (VIN == null || VIN == "")
-            {
-                return NotFound();
-            }
-            Vehicle? vehicleFromDb = _unitOfWork.Vehicle.Get(u => u.VIN == VIN);
-            if (vehicleFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(vehicleFromDb);
-        }
-
-        [HttpPost]
-        public IActionResult EditVehicle(Vehicle obj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Vehicle.Update(obj);
-                _unitOfWork.Save();
-                Message = "Vehicle Updated Successfully";
-                return RedirectToAction("Index", "Vehicle");
-            }
-            return View();
         }
 
         public IActionResult DeleteVehicle(string? VIN)

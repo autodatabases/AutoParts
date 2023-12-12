@@ -21,5 +21,7 @@ namespace AutoParts.Models
         [ForeignKey("CategoryId")]
         [ValidateNever]
         public PartCategory Category { get; set; }
+        [DisplayName("ImageURL")]
+        public string ImageUrl { get; set; }
     }
 }

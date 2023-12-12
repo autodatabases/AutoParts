@@ -10,7 +10,7 @@
     </div>
     <div class="card-body p-4">
         <div class="col-12 text-end pb-2">
-            <a asp-controller="Part" asp-action="AddPart" class="btn btn-outline-primary">
+            <a asp-controller="Part" asp-action="Upsert" class="btn btn-outline-primary">
                 <i class="bi bi-plus-square-fill"></i> Add New Part
             </a>
         </div>
@@ -35,7 +35,7 @@
                         <td>
                             <div class="w-20 btn-group" role="group">
 
-                                <a asp-area="Admin" asp-controller="Part" asp-action="EditPart" asp-route-partId="@obj.PartId" class="btn btn-primary mx-2">
+                                <a asp-area="Admin" asp-controller="Part" asp-action="Upsert" asp-route-partId="@obj.PartId" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
 
