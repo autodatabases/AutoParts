@@ -138,13 +138,12 @@ namespace AutoParts.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VIN")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
 
                     b.HasKey("CategoryId");
 
-                    b.HasIndex("VIN");
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("PartCategories");
 
@@ -153,69 +152,37 @@ namespace AutoParts.DataAccess.Migrations
                         {
                             CategoryId = 1,
                             CategoryName = "Front End Parts",
-                            VIN = "1234ASDF"
+                            VehicleId = 1
                         },
                         new
                         {
                             CategoryId = 2,
                             CategoryName = "Rear End Parts",
-                            VIN = "1235"
+                            VehicleId = 2
                         },
                         new
                         {
                             CategoryId = 3,
                             CategoryName = "Mechanical Parts",
-                            VIN = "1236"
+                            VehicleId = 3
                         });
                 });
 
             modelBuilder.Entity("AutoParts.Models.Vehicle", b =>
                 {
-                    b.Property<string>("VIN")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("VendorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("buildYear")
-                        .IsRequired()
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.HasKey("VIN");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("Vehicles");
-
-                    b.HasData(
-                        new
-                        {
-                            VIN = "1234ASDF",
-                            VendorId = 2,
-                            buildYear = "2001"
-                        },
-                        new
-                        {
-                            VIN = "1235",
-                            VendorId = 3,
-                            buildYear = "2020"
-                        },
-                        new
-                        {
-                            VIN = "1236",
-                            VendorId = 2,
-                            buildYear = "2010"
-                        });
-                });
-
-            modelBuilder.Entity("AutoParts.Models.Vendor", b =>
-                {
-                    b.Property<int>("VendorId")
+                    b.Property<int>("VehicleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VendorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleId"));
+
+                    b.Property<string>("BuildYear")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
@@ -225,22 +192,42 @@ namespace AutoParts.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("VendorId");
+                    b.Property<string>("VIN")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
 
-                    b.ToTable("Vendors");
+                    b.HasKey("VehicleId");
+
+                    b.ToTable("Vehicles");
 
                     b.HasData(
                         new
                         {
-                            VendorId = 2,
-                            Manufacturer = "BMW",
-                            Model = "4 Series"
+                            VehicleId = 1,
+                            BuildYear = "2001",
+                            ImageUrl = "",
+                            Manufacturer = "Toyota",
+                            Model = "Corolla",
+                            VIN = "1234"
                         },
                         new
                         {
-                            VendorId = 3,
-                            Manufacturer = "VW",
-                            Model = "Golf"
+                            VehicleId = 2,
+                            BuildYear = "2020",
+                            ImageUrl = "",
+                            Manufacturer = "BMW",
+                            Model = "Series 3",
+                            VIN = "1235"
+                        },
+                        new
+                        {
+                            VehicleId = 3,
+                            BuildYear = "2010",
+                            ImageUrl = "",
+                            Manufacturer = "Kia",
+                            Model = "Rio",
+                            VIN = "1236"
                         });
                 });
 
@@ -259,22 +246,11 @@ namespace AutoParts.DataAccess.Migrations
                 {
                     b.HasOne("AutoParts.Models.Vehicle", "Vehicle")
                         .WithMany()
-                        .HasForeignKey("VIN")
+                        .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("AutoParts.Models.Vehicle", b =>
-                {
-                    b.HasOne("AutoParts.Models.Vendor", "Vendor")
-                        .WithMany()
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vendor");
                 });
 #pragma warning restore 612, 618
         }

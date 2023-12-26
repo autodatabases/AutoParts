@@ -10,16 +10,18 @@
     </div>
     <div class="card-body p-4">
         <div class="col-12 pb-2 text-end">
-            <a asp-area="Admin" asp-controller="Vehicle" asp-action="Upsert" class="btn btn-outline-primary">
+            <a asp-area="Admin" asp-controller="Vehicle" asp-action="AddVehicle" class="btn btn-outline-primary">
                 <i class="bi bi-plus-square-fill"></i> Add New Vehicle
             </a>
         </div>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Vehicle Id</th>
                     <th>VIN</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
                     <th>Build Year</th>
-                    <th>VendorId</th>
                     <th></th>
                 </tr>
             </thead>
@@ -27,15 +29,17 @@
                 @foreach (var obj in Model)
                 {
                     <tr>
+                        <td>@obj.VehicleId</td>
                         <td>@obj.VIN</td>
-                        <td>@obj.buildYear</td>
-                        <td>@obj.VendorId</td>
+                        <td>@obj.Manufacturer</td>
+                        <td>@obj.Model</td>
+                        <td>@obj.BuildYear</td>
                         <td>
                             <div class="w-20 btn-group">
-                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="Upsert" asp-route-VIN="@obj.VIN" class="btn btn-primary mx-2">
+                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="EditVehicle" asp-route-VehicleId="@obj.VehicleId" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </a>
-                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="DeleteVehicle" asp-route-VIN="@obj.VIN" class="btn btn-danger">
+                                <a asp-area="Admin" asp-controller="Vehicle" asp-action="DeleteVehicle" asp-route-VehicleId="@obj.VehicleId" class="btn btn-danger">
                                     <i class="bi bi-trash3-fill"></i> Delete
                                 </a>
                             </div>

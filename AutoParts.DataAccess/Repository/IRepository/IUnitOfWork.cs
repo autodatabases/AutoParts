@@ -7,7 +7,6 @@ namespace AutoParts.DataAccess.Repository.IRepository
         IAddressRepository Address { get; }
         IVehicleRepository Vehicle { get; }
         IPartCategoryRepository PartCategory { get; }
-        IVendorRepository Vendor { get; }
 
         void Save();
     }

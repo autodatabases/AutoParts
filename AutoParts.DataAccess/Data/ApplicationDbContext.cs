@@ -19,8 +19,6 @@ namespace AutoParts.DataAccess.Data
 
         public DbSet<PartCategory> PartCategories { get; set; }
 
-        public DbSet<Vendor> Vendors { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Part>().HasData(
@@ -33,18 +31,14 @@ namespace AutoParts.DataAccess.Data
                 new Address { AddressId = 2, Street = "42 Swan Avenue", State = "NSW", Suburb = "Strathfield", Postcode = "2135" }
                 );
             modelBuilder.Entity<Vehicle>().HasData(
-                new Vehicle { VIN = "1234ASDF", buildYear = "2001", VendorId = 2},
-                new Vehicle { VIN = "1235", buildYear = "2020", VendorId = 3 },
-                new Vehicle { VIN = "1236", buildYear = "2010", VendorId = 2 }
+                new Vehicle { VehicleId = 1, BuildYear = "2001", ImageUrl = "", Manufacturer = "Toyota", Model = "Corolla", VIN = "1234"},
+                new Vehicle { VehicleId = 2, BuildYear = "2020", ImageUrl = "", Manufacturer = "BMW", Model = "Series 3", VIN = "1235"},
+                new Vehicle { VehicleId = 3, BuildYear = "2010", ImageUrl = "", Manufacturer = "Kia", Model = "Rio", VIN = "1236"}
                 );
             modelBuilder.Entity<PartCategory>().HasData(
-                new PartCategory { CategoryId = 1, CategoryName = "Front End Parts", VIN = "1234ASDF" },
-                new PartCategory { CategoryId = 2, CategoryName = "Rear End Parts", VIN = "1235" },
-                new PartCategory { CategoryId = 3, CategoryName = "Mechanical Parts", VIN = "1236" }
-                );
-            modelBuilder.Entity<Vendor>().HasData(
-                new Vendor { VendorId = 2, Manufacturer = "BMW", Model = "4 Series" },
-                new Vendor { VendorId = 3, Manufacturer = "VW", Model = "Golf" }
+                new PartCategory { CategoryId = 1, CategoryName = "Front End Parts", VehicleId = 1 },
+                new PartCategory { CategoryId = 2, CategoryName = "Rear End Parts", VehicleId = 2 },
+                new PartCategory { CategoryId = 3, CategoryName = "Mechanical Parts", VehicleId = 3 }
                 );
         }
     }

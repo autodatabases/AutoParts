@@ -15,7 +15,18 @@ namespace AutoParts.DataAccess.Repository
 
         public void Update(Vehicle obj)
         {
-            _db.Vehicles.Update(obj);
+            var objFromDb = _db.Vehicles.FirstOrDefault(u => u.VehicleId == obj.VehicleId);
+            if (objFromDb != null)
+            {
+                objFromDb.VIN = obj.VIN;
+                objFromDb.Manufacturer = obj.Manufacturer;
+                objFromDb.Model = obj.Model;
+                objFromDb.BuildYear = obj.BuildYear;
+                if (obj.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl;
+                }
+            }
         }
     }
 }

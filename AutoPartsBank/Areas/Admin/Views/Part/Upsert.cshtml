@@ -1,5 +1,5 @@
 ﻿@model PartVM
-<div class="card shadow border-0">
+<div class="card shadow border-4 mt-4 mb-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -10,59 +10,81 @@
     <div class="card-body p-4">
         <form method="post" enctype="multipart/form-data">
             <input asp-for="Part.PartId" hidden />
-            <div class="border p-3 mt-4">
-                <div asp-validation-summary="ModelOnly" class="row">
+            <input asp-for="Part.ImageUrl" hidden />
+            <div class="row">
+                <div class="col-10">
+                    <div class="border p-3 mt-4">
+                        <div asp-validation-summary="ModelOnly" class="row">
+                        </div>
+                        <div class="row">
+                            <div class="form-floating py-2">
+                                <input asp-for="Part.PartName" type="text" class="form-control border-0 shadow" />
+                                <label asp-for="Part.PartName" class="ms-2"></label>
+                                <span asp-validation-for="Part.PartName" class="text-primary"></span>
+                            </div>
+                            <div class="py-2 ">
+                                <label asp-for="Part.Description" class="ms-2"></label>
+                                <textarea asp-for="Part.Description" type="text" class="form-control border-0 shadow"></textarea>
+                            </div>
+                            <div class="form-floating py-2">
+                                <select asp-for="Part.CategoryId" asp-items="@Model.PartCategoryList" type="text" class="form-select border-0 shadow">
+                                    <option disabled selected>--Select Category--</option>
+                                </select>
+                                <label asp-for="Part.CategoryId" class="ms-2"></label>
+                                <span asp-validation-for="Part.CategoryId" class="text-primary"></span>
+                            </div>
+                            <div class="form-floating py-2">
+                                <input type="file" name="file" class="form-control border-0 shadow" />
+                                <label asp-for="Part.ImageUrl" class="ms-2"></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 col-md-3">
+                                @if (Model.Part.PartId != 0)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control">
+                                        <i class="bi bi-database-fill-add"></i> Update
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary form-control">
+                                        <i class="bi bi-database-fill-add"></i> Add
+                                    </button>
+                                }
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a asp-area="Admin" asp-controller="Part" asp-action="Index" class="btn btn-outline-secondary form-control">
+                                    <i class="bi bi-arrow-left-circle-fill"></i> Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="form-floating py-2 col-6">
-                        <input asp-for="Part.PartName" type="text" class="form-control border-0 shadow" />
-                        <label asp-for="Part.PartName" class="ms-2"></label>
-                        <span asp-validation-for="Part.PartName" class="text-primary"></span>
-                    </div>
-                    <div class="form-floating py-2 col-6">
-                        <input asp-for="Part.Description" type="text" class="form-control border-0 shadow" />
-                        <label asp-for="Part.Description" class="ms-2"></label>
-                        <span asp-validation-for="Part.Description" class="text-primary"></span>
-                    </div>
-                    <div class="form-floating py-2 col-6">
-                        <select asp-for="Part.CategoryId" asp-items="@Model.PartCategoryList" type="text" class="form-select border-0 shadow">
-                            <option disabled selected>--Select Category--</option>
-                        </select>
-                        <label asp-for="Part.CategoryId" class="ms-2"></label>
-                        <span asp-validation-for="Part.CategoryId" class="text-primary"></span>
-                    </div>
-                    <div class="form-floating py-2 col-6">
-                        <input type="file" class="form-control border-0 shadow" />
-                        <label asp-for="Part.ImageUrl" class="ms-2"></label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-md-3">
-                        @if (Model.Part.PartId != 0)
-                        {
-                            <button type="submit" class="btn btn-primary form-control">
-                                <i class="bi bi-database-fill-add"></i> Update
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary form-control">
-                                <i class="bi bi-database-fill-add"></i> Add
-                            </button>
-                        }
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-area="Admin" asp-controller="Part" asp-action="Index" class="btn btn-outline-secondary form-control">
-                            <i class="bi bi-arrow-left-circle-fill"></i> Back
-                        </a>
-                    </div>
+                <div class="col-2">
+                    <img src="@Model.Part.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9"/>
                 </div>
             </div>
+           
         </form>
     </div>
 </div>
 
 @section Scripts{
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+        });
+    </script>
     @{
         <partial name="_ValidationScriptsPartial" />
     }

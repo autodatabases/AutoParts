@@ -1,3 +1,4 @@
+using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,14 +10,23 @@ namespace AutoPartsBank.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUnitOfWork _unitOfWork;
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Part> partList = _unitOfWork.Part.GetAll(includeProperties:"Category");
+            return View(partList);
+        }
+
+        public IActionResult PartDetails(int partId)
+        {
+            Part part = _unitOfWork.Part.Get( u=>u.PartId==partId,includeProperties: "Category");
+            return View(part);
         }
 
         public IActionResult Privacy()

@@ -14,7 +14,17 @@ namespace AutoParts.DataAccess.Repository
         }
         public void Update(Part obj)
         {
-            _db.Parts.Update(obj);
+            var objFromDb = _db.Parts.FirstOrDefault(u => u.PartId == obj.PartId);
+            if (objFromDb != null)
+            {
+                objFromDb.PartName = obj.PartName;
+                objFromDb.Description = obj.Description;
+                objFromDb.CategoryId = obj.CategoryId;
+                if (obj.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl;
+                }
+            }
         }
     }
 }

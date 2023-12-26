@@ -15,8 +15,8 @@ namespace AutoParts.Models
         [DisplayName("Category Name")]
         public string CategoryName { get; set; }
 
-        public string VIN { get; set; }
-        [ForeignKey("VIN")]
+        public int VehicleId { get; set; }
+        [ForeignKey("VehicleId")]
         [ValidateNever]
         public Vehicle Vehicle { get; set; }
 

@@ -18,7 +18,7 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<PartCategory> objPartCategory = _unitOfWork.PartCategory.GetAll().ToList();
+            List<PartCategory> objPartCategory = _unitOfWork.PartCategory.GetAll(includeProperties: "Vehicle").ToList();
             
             return View(objPartCategory);
         }
@@ -29,11 +29,12 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 VehicleList = _unitOfWork.Vehicle
                 .GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.VIN,
-                    Value = u.VIN
+                    Text = u.VehicleId.ToString(),
+                    Value = u.VehicleId.ToString(),
                 }),
                 PartCategory = new PartCategory()
             };
+            
             return View(partCategoryVM);
         }
 
@@ -51,39 +52,50 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 partCategoryVM.VehicleList = _unitOfWork.Vehicle
                 .GetAll().Select(u => new SelectListItem
                 {
-                    Text = u.VIN,
-                    Value = u.VIN
+                    Text = u.VehicleId.ToString(),
+                    Value = u.VehicleId.ToString()
                 });
                 return View(partCategoryVM);
             }
             
         }
 
-        public IActionResult EditPartCategory(int? categoryId)
+        public IActionResult EditPartCategory(PartCategoryVM? partCategoryVM, int? categoryId)
         {
+            
             if (categoryId == null || categoryId == 0)
             {
                 return NotFound();
             }
-            PartCategory? partCategoryFromDb = _unitOfWork.PartCategory.Get(u => u.CategoryId == categoryId);
-            if (partCategoryFromDb == null)
+            else 
             {
-                return NotFound();
+                partCategoryVM.VehicleList = _unitOfWork.Vehicle
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.VehicleId.ToString(),
+                    Value = u.VehicleId.ToString()
+                });
+                partCategoryVM.PartCategory = _unitOfWork.PartCategory.Get(u => u.CategoryId == categoryId);
+                return View(partCategoryVM);
             }
-            return View(partCategoryFromDb);
+            
         }
 
         [HttpPost]
-        public IActionResult EditPartCategory(PartCategory obj)
+        public IActionResult EditPartCategory(PartCategoryVM partCategoryVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.PartCategory.Update(obj);
+                _unitOfWork.PartCategory.Update(partCategoryVM.PartCategory);
                 _unitOfWork.Save();
                 Message = "Part Category Updated Successfully";
                 return RedirectToAction("Index", "PartCategory");
             }
-            return View();
+            else
+            {
+                
+                return View(partCategoryVM);
+            }
         }
 
         public IActionResult DeletePartCategory(int? categoryId)

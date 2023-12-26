@@ -22,6 +22,7 @@ namespace AutoParts.Models
         [ValidateNever]
         public PartCategory Category { get; set; }
         [DisplayName("ImageURL")]
+        [ValidateNever]
         public string ImageUrl { get; set; }
     }
 }

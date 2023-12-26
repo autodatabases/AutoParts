@@ -11,13 +11,15 @@ namespace AutoPartsBank.Areas.Admin.Controllers
     public class PartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PartController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public PartController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<Part> objPartList = _unitOfWork.Part.GetAll().ToList();
+            List<Part> objPartList = _unitOfWork.Part.GetAll(includeProperties: "Category").ToList();
             
             return View(objPartList);
         }
@@ -52,7 +54,40 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Part.Add(partVM.Part);
+                //access the wwwroot folder
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\parts");
+                    //delete if not empty
+                    if (!string.IsNullOrEmpty(partVM.Part.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, partVM.Part.ImageUrl.Trim('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    //upload new image file
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    partVM.Part.ImageUrl = @"\images\parts\" + fileName;
+                }
+                if (partVM.Part.PartId == 0)
+                {
+                    _unitOfWork.Part.Add(partVM.Part);
+                }
+                else
+                {
+                    _unitOfWork.Part.Update(partVM.Part);
+                }
+                
                 _unitOfWork.Save();
                 TempData["success"] = "Part Added Successfully";
                 return RedirectToAction("Index", "Part");
@@ -65,36 +100,36 @@ namespace AutoPartsBank.Areas.Admin.Controllers
                 });
                 return View(partVM);
             }
-
-            
         }
 
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Part> objPartList = _unitOfWork.Part.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objPartList });
+        }
+        [HttpDelete]
         public IActionResult DeletePart(int? partId)
         {
-            if (partId == null || partId == 0)
+            var partToBeDeleted = _unitOfWork.Part.Get(u => u.PartId == partId);
+            if (partToBeDeleted == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            Part? partFromDb = _unitOfWork.Part.Get(u => u.PartId == partId);
-            if (partFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(partFromDb);
-        }
 
-        [HttpPost, ActionName("DeletePart")]
-        public IActionResult RemovePart(int? partId)
-        {
-            Part? partFromDb = _unitOfWork.Part.Get(u => u.PartId == partId);
-            if (partFromDb == null)
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, partToBeDeleted.ImageUrl.Trim('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
             {
-                return NotFound();
+                System.IO.File.Delete(oldImagePath);
             }
-            _unitOfWork.Part.Remove(partFromDb);
+
+            _unitOfWork.Part.Remove(partToBeDeleted);
             _unitOfWork.Save();
-            TempData["success"] = "Part Deleted Successfully";
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, message = "Part deleted successfully" });
         }
+        #endregion
     }
 }

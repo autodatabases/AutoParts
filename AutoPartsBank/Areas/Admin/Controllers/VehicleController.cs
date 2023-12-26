@@ -10,73 +10,107 @@ namespace AutoPartsBank.Areas.Admin.Controllers
     public class VehicleController : Controller
     {
         private IUnitOfWork _unitOfWork;
-        [TempData]
-        public string Message { get; set; }
-        public VehicleController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        
+        
+        public VehicleController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            List<Vehicle> objVehicle = _unitOfWork.Vehicle.GetAll().ToList();
+            List<Vehicle> objVehicle = _unitOfWork.Vehicle.GetAll(includeProperties: null).ToList();
             return View(objVehicle);
         }
 
-        public IActionResult Upsert(string? vin)
+        public IActionResult AddVehicle()
         {
-            VehicleVM vehicleVM = new() {
-                VendorList = _unitOfWork.Vendor
-                .GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Manufacturer,
-                    Value = u.VendorId.ToString()
-                }),
-
-                Vehicle = new Vehicle()
-
-            };
-            if (vin == null)
-            {
-                //create
-                return View(vehicleVM);
-            }
-            else
-            {
-                //update
-                vehicleVM.Vehicle = _unitOfWork.Vehicle.Get(u => u.VIN == vin);
-                return View(vehicleVM);
-            }
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Upsert(VehicleVM vehicleVM)
+        public IActionResult AddVehicle(Vehicle vehicle, IFormFile? file )
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Vehicle.Add(vehicleVM.Vehicle);
+                //access to wwwroot folder
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string vehiclePath = Path.Combine(wwwRootPath, @"images\vehicles");
+                //upload new image file
+                using (var fileStream = new FileStream(Path.Combine(vehiclePath, fileName), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                vehicle.ImageUrl = @"\images\vehicles\" + fileName;
+               
+                _unitOfWork.Vehicle.Add(vehicle);
                 _unitOfWork.Save();
-                Message = "Vehicle Added Successfully";
                 return RedirectToAction("Index", "Vehicle");
             }
-            else {
-                vehicleVM.VendorList = _unitOfWork.Vendor
-                    .GetAll().Select(u => new SelectListItem { 
-                        Text = u.Manufacturer,
-                        Value = u.VendorId.ToString()
-                    });
-                return View();
-            }
-            
+            return View();
         }
 
-        public IActionResult DeleteVehicle(string? VIN)
+        public IActionResult EditVehicle(int? vehicleId)
         {
-            if (VIN == null || VIN == "")
+                if (vehicleId == null || vehicleId == 0)
+                {
+                    return NotFound();
+                }
+                Vehicle vehicleFromDb = _unitOfWork.Vehicle.Get(u=>u.VehicleId == vehicleId);
+                if (vehicleFromDb == null)
+                {
+                    return NotFound();
+                }
+                return View(vehicleFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult EditVehicle(Vehicle vehicle, IFormFile? file)
+        {
+            if (ModelState.IsValid)
+            {
+                //access to wwwroot folder
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string vehiclePath = Path.Combine(wwwRootPath, @"images\vehicles");
+
+                    //delete if not empty
+                    if (!string.IsNullOrEmpty(vehicle.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, vehicle.ImageUrl.Trim('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    //upload new image file
+                    using (var fileStream = new FileStream(Path.Combine(vehiclePath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    vehicle.ImageUrl = @"\images\vehicles\" + fileName;
+                }
+                _unitOfWork.Vehicle.Update(vehicle);
+                _unitOfWork.Save();
+                return RedirectToAction("Index", "Vehicle");
+            }
+            return View();
+        }
+        public IActionResult DeleteVehicle(int? vehicleId)
+        {
+            if (vehicleId == null || vehicleId == 0)
             {
                 return NotFound();
             }
 
-            Vehicle? vehicleFromDb = _unitOfWork.Vehicle.Get(u => u.VIN == VIN);
+            Vehicle? vehicleFromDb = _unitOfWork.Vehicle.Get(u => u.VehicleId == vehicleId);
             if (vehicleFromDb == null)
             {
                 return NotFound();
@@ -85,16 +119,20 @@ namespace AutoPartsBank.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("DeleteVehicle")]
-        public IActionResult RemoveVehicle(string? VIN)
+        public IActionResult RemoveVehicle(int? vehicleId)
         {
-            Vehicle? vehicleFromDb = _unitOfWork.Vehicle.Get(u => u.VIN == VIN);
+            Vehicle? vehicleFromDb = _unitOfWork.Vehicle.Get(u => u.VehicleId == vehicleId);
             if (vehicleFromDb == null)
             {
                 return NotFound();
             }
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, vehicleFromDb.ImageUrl.Trim('\\'));
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
             _unitOfWork.Vehicle.Remove(vehicleFromDb);
             _unitOfWork.Save();
-            Message = "Vehicle Deleted Successfully";
             return RedirectToAction("Index");
         }
     }

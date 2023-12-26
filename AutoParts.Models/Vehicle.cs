@@ -8,17 +8,26 @@ namespace AutoParts.Models
     public class Vehicle
     {
         [Key]
-        [DisplayName("Vehicle Identification Number")]
+        [DisplayName("Vehicle Id")]
+        public int VehicleId { get; set; }
+
+        [Required]
+        [DisplayName("Vehicle Identification NUmber")]
+        [MaxLength(4, ErrorMessage = "Invalid VIN")]
         public string VIN { get; set; }
 
         [Required]
-        [MaxLength(4, ErrorMessage = "Invalid Year")]
-        [DisplayName("Build Year")]
-        public string buildYear { get; set; }
+        [DisplayName("Vehicle Manufacturer")]
+        public string Manufacturer { get; set; }
 
-        public int VendorId { get; set; }
-        [ForeignKey("VendorId")]
+        [Required]
+        [DisplayName("Vehicle Model")]
+        public string Model { get; set; }
+
+        [Required]
+        [DisplayName("Build Year")]
+        public string BuildYear { get; set; }
         [ValidateNever]
-        public Vendor Vendor { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

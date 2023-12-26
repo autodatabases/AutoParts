@@ -9,9 +9,9 @@ namespace AutoParts.DataAccess.Repository.IRepository
 {
     public interface IRepository<T> where T : class
     {
-        //T - Part, Address, Vehicle, PartCategory, Vendor
-        IEnumerable<T> GetAll();
-        T Get(Expression<Func<T, bool>> filter);
+        //T - Part, Address, Vehicle, PartCategory
+        IEnumerable<T> GetAll(string? includeProperties = null);
+        T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
         void Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entity);

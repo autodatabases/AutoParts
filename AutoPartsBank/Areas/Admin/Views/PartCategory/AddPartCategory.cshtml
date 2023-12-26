@@ -18,11 +18,11 @@
                         <span asp-validation-for="PartCategory.CategoryName" class="text-primary"></span>
                     </div>
                     <div class="form-floating py-2 col-6">
-                        <select asp-for="PartCategory.VIN" asp-items="@Model.VehicleList" type="text" class="form-select border-0 shadow">
+                        <select asp-for="PartCategory.VehicleId" asp-items="@Model.VehicleList" type="text" class="form-select border-0 shadow">
                             <option disabled selected>--Select Vehicle--</option>
                         </select>
-                        <label asp-for="PartCategory.VIN" class="ms-2"></label>
-                        <span asp-validation-for="PartCategory.VIN" class="text-primary"></span>
+                        <label asp-for="PartCategory.VehicleId" class="ms-2"></label>
+                        <span asp-validation-for="PartCategory.VehicleId" class="text-primary"></span>
                     </div>
                 </div>
                 <div class="row pt-2 pb-2">
