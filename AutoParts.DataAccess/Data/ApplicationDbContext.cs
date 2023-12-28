@@ -1,10 +1,11 @@
 ﻿using AutoParts.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AutoParts.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options) : base(options)
         {
@@ -21,6 +22,8 @@ namespace AutoParts.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Part>().HasData(
                 new Part { PartId = 1, PartName = "Bonnet", Description="Engine Cover", CategoryId = 1, ImageUrl=""},
                 new Part { PartId = 2, PartName = "Right Guard", Description = "Above Right Wheel", CategoryId = 2, ImageUrl= "" },
