@@ -1,12 +1,15 @@
 ﻿using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
 using AutoParts.Models.ViewModels;
+using AutoParts.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AutoPartsBank.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetail.Role_Admin)]
     public class PartCategoryController : Controller
     {
         private IUnitOfWork _unitOfWork;

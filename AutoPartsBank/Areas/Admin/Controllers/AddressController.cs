@@ -1,10 +1,13 @@
 ﻿using AutoParts.DataAccess.Repository.IRepository;
 using AutoParts.Models;
+using AutoParts.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoPartsBank.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetail.Role_Admin)]
     public class AddressController : Controller
     {
         private IUnitOfWork _unitOfWork;
